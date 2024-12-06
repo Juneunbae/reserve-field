@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <configuration>
-    <property name="LOG_PATH_NAME" value="logs/application.log" />
-    <property name="PATTERN" value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%-5level] [%thread] %logger  :  %msg%n" />
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+
+    <property name="LOG_PATH_NAME" value="logs/application.log"/>
+    <property name="PATTERN"
+              value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] %clr([%-5level]){colorByLevel} [%thread] %clr(%logger){magenta}  :  %msg%n"/>
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_PATH_NAME}</file>
@@ -24,7 +27,7 @@
 
 
     <root level="INFO">
-        <appender-ref ref="FILE" />
-        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="CONSOLE"/>
     </root>
 </configuration>
