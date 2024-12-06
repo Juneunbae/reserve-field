@@ -144,4 +144,15 @@ public class UserService {
         user.changePassword(passwordEncoder.encode(updateMyInfoRequestDto.newPassword()));
         log.info("사용자: {}, 비밀번호 변경 성공", user.getId());
     }
+
+    @Transactional
+    public void withdraw(Long id) {
+        User user = userRepository.findById(id)
+            .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 사용자입니다."));
+
+        // TODO: 만약 예약된 정보가 있을 경우, 삭제 반려
+
+        userRepository.delete(user);
+        log.info("사용자: {}, 탈퇴 성공", user.getId());
+    }
 }

@@ -72,4 +72,13 @@ public class UserController {
         userService.updateMyInfo(id, updateMyInfoRequestDto, errors);
         return Response.ok("내 정보 수정 완료");
     }
+
+    @Description(
+        "회원 탈퇴"
+    )
+    @DeleteMapping("/{id}/withdraw")
+    public ResponseEntity<Map<String, String>> withdraw(@PathVariable Long id) {
+        userService.withdraw(id);
+        return Response.ok("회원탈퇴 성공");
+    }
 }
