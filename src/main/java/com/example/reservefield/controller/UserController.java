@@ -1,19 +1,18 @@
 package com.example.reservefield.controller;
 
-import com.example.reservefield.common.Response;
 import com.example.reservefield.domain.user.UserService;
 import com.example.reservefield.dto.request.CheckPasswordRequestDto;
 import com.example.reservefield.dto.request.LoginRequestDto;
 import com.example.reservefield.dto.request.SignupRequestDto;
 import com.example.reservefield.dto.request.UpdateMyInfoRequestDto;
+import com.example.reservefield.dto.response.MyInfoDto;
+import com.example.reservefield.dto.response.TokenInfoDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Description;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,60 +24,60 @@ public class UserController {
         "회원 가입"
     )
     @PostMapping("/signup")
-    public ResponseEntity<Map<String, String>> signup(@Validated @RequestBody SignupRequestDto signupRequestDto, Errors errors) {
+    public ResponseEntity<Void> signup(@Validated @RequestBody SignupRequestDto signupRequestDto, Errors errors) {
         userService.signup(signupRequestDto, errors);
-        return Response.ok("회원가입 완료");
+        return ResponseEntity.ok().build();
     }
 
     @Description(
         "로그인"
     )
     @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> login(@Validated @RequestBody LoginRequestDto loginRequestDto, Errors errors) {
-        return Response.ok(userService.login(loginRequestDto, errors));
+    public ResponseEntity<TokenInfoDto> login(@Validated @RequestBody LoginRequestDto loginRequestDto, Errors errors) {
+        return ResponseEntity.ok(userService.login(loginRequestDto, errors));
     }
 
     @Description(
         "이메일 중복 검사"
     )
     @GetMapping("/check/email")
-    public ResponseEntity<Map<String, String>> checkEmail(@RequestParam String email) {
+    public ResponseEntity<Void> checkEmail(@RequestParam String email) {
         userService.checkEmail(email);
-        return Response.ok("이메일 중복 검사 성공");
+        return ResponseEntity.ok().build();
     }
 
     @Description(
         "비밀번호 인증"
     )
     @PostMapping("/check/password")
-    public ResponseEntity<Map<String, String>> checkPassword(@Validated @RequestBody CheckPasswordRequestDto checkPasswordRequestDto, Errors errors) {
+    public ResponseEntity<Void> checkPassword(@Validated @RequestBody CheckPasswordRequestDto checkPasswordRequestDto, Errors errors) {
         userService.checkPassword(checkPasswordRequestDto, errors);
-        return Response.ok("비밀번호 인증 성공");
+        return ResponseEntity.ok().build();
     }
 
     @Description(
         "내 정보 가져오기"
     )
     @GetMapping("/{id}/my-info")
-    public ResponseEntity<Map<String, Object>> getMyInfo(@PathVariable Long id) {
-        return Response.ok(userService.getMyInfo(id));
+    public ResponseEntity<MyInfoDto> getMyInfo(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.getMyInfo(id));
     }
 
     @Description(
         "내 정보 수정하기 - 비밀번호"
     )
     @PutMapping("/{id}/my-info")
-    public ResponseEntity<Map<String, String>> updateMyInfo(@PathVariable Long id, @Validated @RequestBody UpdateMyInfoRequestDto updateMyInfoRequestDto, Errors errors) {
+    public ResponseEntity<Void> updateMyInfo(@PathVariable Long id, @Validated @RequestBody UpdateMyInfoRequestDto updateMyInfoRequestDto, Errors errors) {
         userService.updateMyInfo(id, updateMyInfoRequestDto, errors);
-        return Response.ok("내 정보 수정 완료");
+        return ResponseEntity.ok().build();
     }
 
     @Description(
         "회원 탈퇴"
     )
     @DeleteMapping("/{id}/withdraw")
-    public ResponseEntity<Map<String, String>> withdraw(@PathVariable Long id) {
+    public ResponseEntity<Void> withdraw(@PathVariable Long id) {
         userService.withdraw(id);
-        return Response.ok("회원탈퇴 성공");
+        return ResponseEntity.ok().build();
     }
 }

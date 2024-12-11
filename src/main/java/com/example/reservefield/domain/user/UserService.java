@@ -8,6 +8,7 @@ import com.example.reservefield.dto.request.UpdateMyInfoRequestDto;
 import com.example.reservefield.dto.response.MyInfoDto;
 import com.example.reservefield.dto.response.TokenInfoDto;
 import com.example.reservefield.exception.CustomException;
+import com.example.reservefield.exception.ValidationErrors;
 import com.example.reservefield.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,14 +28,13 @@ public class UserService {
     private final UserDetailService userDetailService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ValidationErrors validationErrors;
     private final UserMapper userMapper;
     private final JwtUtils jwtUtils;
 
     @Transactional
     public void signup(SignupRequestDto signupRequestDto, Errors errors) {
-        if (errors.hasErrors()) {
-            throw new CustomException(HttpStatus.BAD_REQUEST, "회원가입 양식에 일치하지 않는 양식이 있습니다.");
-        }
+        validationErrors.checkDtoErrors(errors, "회원가입 양식에 일치하지 않는 양식이 있습니다.");
 
         if (userRepository.existsByEmail(signupRequestDto.email())) {
             throw new CustomException(HttpStatus.ALREADY_REPORTED, "이미 사용 중인 이메일 입니다.");
@@ -59,9 +59,7 @@ public class UserService {
 
     @Transactional
     public TokenInfoDto login(LoginRequestDto loginRequestDto, Errors errors) {
-        if (errors.hasErrors()) {
-            throw new CustomException(HttpStatus.BAD_REQUEST, "잘못된 이메일 양식입니다.");
-        }
+        validationErrors.checkDtoErrors(errors, "잘못된 이메일 양식입니다.");
 
         User user = userRepository.findByEmail(loginRequestDto.email())
             .orElseThrow(() -> new CustomException(HttpStatus.UNAUTHORIZED, "아이디 또는 비밀번호가 일치하지 않습니다."));
@@ -105,9 +103,7 @@ public class UserService {
 
     @Transactional
     public void checkPassword(CheckPasswordRequestDto checkPasswordRequestDto, Errors errors) {
-        if (errors.hasErrors()) {
-            throw new CustomException(HttpStatus.BAD_REQUEST, "잘못된 이메일 형식입니다.");
-        }
+        validationErrors.checkDtoErrors(errors, "잘못된 이메일 양식입니다.");
 
         User user = userRepository.findPasswordByEmail(checkPasswordRequestDto.email())
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 사용자입니다."));
@@ -130,9 +126,7 @@ public class UserService {
 
     @Transactional
     public void updateMyInfo(Long id, UpdateMyInfoRequestDto updateMyInfoRequestDto, Errors errors) {
-        if (errors.hasErrors()) {
-            throw new CustomException(HttpStatus.BAD_REQUEST, "잘못된 비밀번호 형식입니다.");
-        }
+        validationErrors.checkDtoErrors(errors, "잘못된 비밀번호 형식입니다.");
 
         User user = userRepository.findById(id)
             .orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "존재하지 않는 사용자입니다."));
