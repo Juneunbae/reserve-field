@@ -1,7 +1,6 @@
 package com.example.reservefield.domain.user;
 
 import com.example.reservefield.common.security.JwtUtils;
-import com.example.reservefield.dto.request.CheckPasswordRequestDto;
 import com.example.reservefield.dto.request.LoginRequestDto;
 import com.example.reservefield.dto.request.SignupRequestDto;
 import com.example.reservefield.dto.request.UpdateMyInfoRequestDto;
@@ -86,35 +85,6 @@ public class UserService {
         return jwtUtils.generateToken(user);
     }
 
-    @Transactional
-    public void checkEmail(String email) {
-        String emailRegexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
-
-        if (!email.matches(emailRegexp)) {
-            throw new CustomException(HttpStatus.BAD_REQUEST, "잘못된 이메일 형식입니다.");
-        }
-
-        if (userRepository.existsByEmail(email)) {
-            throw new CustomException(HttpStatus.ALREADY_REPORTED, "이미 사용 중인 이메일입니다.");
-        }
-
-        log.info("이메일 중복 여부 검사 통과: {}", email);
-    }
-
-    @Transactional
-    public void checkPassword(CheckPasswordRequestDto checkPasswordRequestDto, Errors errors) {
-        validationErrors.checkDtoErrors(errors, "잘못된 이메일 양식입니다.");
-
-        User user = userRepository.findPasswordByEmail(checkPasswordRequestDto.email())
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 사용자입니다."));
-
-        if (!passwordEncoder.matches(checkPasswordRequestDto.password(), user.getPassword())) {
-            throw new CustomException(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다.");
-        }
-
-        log.info("비밀번호 인증 성공: {}", checkPasswordRequestDto.email());
-    }
-
     @Transactional(readOnly = true)
     public MyInfoDto getMyInfo(Long id) {
         User user = userRepository.findById(id)
@@ -148,5 +118,16 @@ public class UserService {
 
         userRepository.delete(user);
         log.info("사용자: {}, 탈퇴 성공", user.getId());
+    }
+
+    @Transactional
+    public Boolean existsUserByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    @Transactional
+    public User findUserPasswordByEmail(String email) {
+        return userRepository.findPasswordByEmail(email)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 사용자입니다."));
     }
 }

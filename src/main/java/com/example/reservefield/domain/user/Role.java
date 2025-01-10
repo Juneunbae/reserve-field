@@ -5,9 +5,9 @@ import lombok.Getter;
 
 @Getter
 public enum Role implements EnumType {
-    PLAYER("사용자"),
-    EMPLOYEE("직원"),
-    ADMIN("관리자");
+    PLAYER("PLAYER"),
+    EMPLOYEE("EMPLOYEE"),
+    ADMIN("ADMIN");
 
     private final String description;
 

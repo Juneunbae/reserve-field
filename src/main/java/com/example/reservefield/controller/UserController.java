@@ -1,7 +1,6 @@
 package com.example.reservefield.controller;
 
 import com.example.reservefield.domain.user.UserService;
-import com.example.reservefield.dto.request.CheckPasswordRequestDto;
 import com.example.reservefield.dto.request.LoginRequestDto;
 import com.example.reservefield.dto.request.SignupRequestDto;
 import com.example.reservefield.dto.request.UpdateMyInfoRequestDto;
@@ -35,24 +34,6 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<TokenInfoDto> login(@Validated @RequestBody LoginRequestDto loginRequestDto, Errors errors) {
         return ResponseEntity.ok(userService.login(loginRequestDto, errors));
-    }
-
-    @Description(
-        "이메일 중복 검사"
-    )
-    @GetMapping("/check/email")
-    public ResponseEntity<Void> checkEmail(@RequestParam String email) {
-        userService.checkEmail(email);
-        return ResponseEntity.ok().build();
-    }
-
-    @Description(
-        "비밀번호 인증"
-    )
-    @PostMapping("/check/password")
-    public ResponseEntity<Void> checkPassword(@Validated @RequestBody CheckPasswordRequestDto checkPasswordRequestDto, Errors errors) {
-        userService.checkPassword(checkPasswordRequestDto, errors);
-        return ResponseEntity.ok().build();
     }
 
     @Description(

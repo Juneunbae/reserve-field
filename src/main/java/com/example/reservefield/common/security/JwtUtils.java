@@ -46,6 +46,7 @@ public class JwtUtils {
 
         return Jwts.builder()
             .claim("id", user.getId())
+            .claim("role", user.getRole())
             .claim("type", JwtType.REFRESH)
             .issuedAt(new Date())
             .expiration(new Date(new Date().getTime() + this.refreshExpireTime))
