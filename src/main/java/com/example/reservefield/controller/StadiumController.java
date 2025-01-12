@@ -1,20 +1,13 @@
 package com.example.reservefield.controller;
 
-import com.example.reservefield.domain.stadium.Address;
-import com.example.reservefield.domain.stadium.StadiumService;
-import com.example.reservefield.domain.stadium.StadiumSize;
-import com.example.reservefield.domain.stadium.StadiumType;
-import com.example.reservefield.dto.request.CreateStadiumRequestDto;
-import com.example.reservefield.dto.request.UpdateStadiumRequestDto;
-import com.example.reservefield.dto.response.StadiumDetailDto;
-import com.example.reservefield.dto.response.StadiumInfosDto;
+import com.example.reservefield.domain.stadium.*;
+import com.example.reservefield.dto.response.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Description;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.Errors;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -24,21 +17,18 @@ public class StadiumController {
     private final StadiumService stadiumService;
 
     @Description(
-        "전체 구장 정보 가져오기 - Paging"
+        "전체 구장 정보 가져오기 - Paging (임직원 용)"
     )
     @GetMapping
     public ResponseEntity<StadiumInfosDto> getStadiumInfos(
+        @RequestParam(required = false, defaultValue = "1") int page,
         @RequestParam(required = false, defaultValue = "") String name,
         @RequestParam(required = false, defaultValue = "") Address address,
         @RequestParam(required = false, defaultValue = "") StadiumSize stadiumSize,
         @RequestParam(required = false, defaultValue = "") StadiumType stadiumType,
-        @RequestParam(required = false, defaultValue = "1") int page
+        @RequestParam(required = false, defaultValue = "") DoorType doorType
     ) {
-        return ResponseEntity.ok(
-            stadiumService.getStadiumInfos(
-                name, address, stadiumSize, stadiumType, page
-            )
-        );
+        return ResponseEntity.ok(stadiumService.getStadiumInfos(name, address, stadiumSize, stadiumType, page, doorType));
     }
 
     @Description(
@@ -50,36 +40,37 @@ public class StadiumController {
     }
 
     @Description(
-        "구장 정보 등록하기"
+        "구장 이미지 조회"
     )
-    @PostMapping("/create")
-    public ResponseEntity<Void> createStadium(
-        @Validated @RequestBody List<CreateStadiumRequestDto> create,
-        Errors errors
-    ) {
-        stadiumService.createStadium(create, errors);
-        return ResponseEntity.ok().build();
+    @GetMapping("/{id}/images")
+    public ResponseEntity<List<ImageInfoDto>> getStadiumImages(@PathVariable Long id) {
+        return ResponseEntity.ok(stadiumService.getStadiumImages(id));
     }
 
     @Description(
-        "구장 정보 수정하기"
+        "특정 구장 예약정보 조회하기"
     )
-    @PutMapping("/{stadiumId}/update")
-    public ResponseEntity<Void> updateStadium(
-        @PathVariable Long stadiumId,
-        @Validated @RequestBody UpdateStadiumRequestDto update,
-        Errors errors
+    @GetMapping("/{id}/reservation")
+    public ResponseEntity<List<StadiumReserveTimeDto>> getStadiumReserveTime(
+        @PathVariable("id") Long id,
+        @RequestParam(required = false, defaultValue = "") LocalDate reserveDate
     ) {
-        stadiumService.updateStadium(stadiumId, update, errors);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(stadiumService.getStadiumReserveTime(id, reserveDate));
     }
 
     @Description(
-        "구장 정보 삭제하기"
+        "전체 구장 정보 및 예약정보 조회하기"
     )
-    @DeleteMapping("/{stadiumId}/delete")
-    public ResponseEntity<Void> deleteStadium(@PathVariable Long stadiumId) {
-        stadiumService.deleteStadium(stadiumId);
-        return ResponseEntity.ok().build();
+    @GetMapping("/reservations")
+    public ResponseEntity<StadiumReserveDto> getStadiumReserve(
+        @RequestParam(required = false, defaultValue = "1") int page,
+        @RequestParam(required = false, defaultValue = "") LocalDate reserveDate,
+        @RequestParam(required = false, defaultValue = "") String name,
+        @RequestParam(required = false, defaultValue = "") Address address,
+        @RequestParam(required = false, defaultValue = "") StadiumSize stadiumSize,
+        @RequestParam(required = false, defaultValue = "") StadiumType stadiumType,
+        @RequestParam(required = false, defaultValue = "") DoorType doorType
+    ) {
+        return ResponseEntity.ok(stadiumService.getStadiumReserve(page, reserveDate, name, address, stadiumSize, stadiumType, doorType));
     }
 }

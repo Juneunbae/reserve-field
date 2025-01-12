@@ -1,5 +1,6 @@
 package com.example.reservefield.domain.stadium;
 
+import com.example.reservefield.domain.image.Image;
 import com.example.reservefield.domain.user.User;
 import com.example.reservefield.dto.request.UpdateStadiumRequestDto;
 import jakarta.persistence.*;
@@ -17,6 +18,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -31,6 +34,9 @@ public class Stadium {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+        name = "admin_id"
+    )
     private User admin;
 
     @Column(
@@ -40,14 +46,16 @@ public class Stadium {
     private String name;
 
     @Column(
+        name = "size_x",
         nullable = false
     )
-    private Integer xSize;
+    private Integer sizeX;
 
     @Column(
+        name = "size_y",
         nullable = false
     )
-    private Integer ySize;
+    private Integer sizeY;
 
     @Column(
         nullable = false,
@@ -202,17 +210,25 @@ public class Stadium {
     @LastModifiedBy
     private Long updatedBy;
 
+    @ToString.Exclude
+    @OneToMany(mappedBy = "stadium", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Image> images = new ArrayList<>();
+
+    public void addImage(Image image) {
+        images.add(image);
+    }
+
     public void update(UpdateStadiumRequestDto update) {
         if (update.name() != null) {
             this.name = update.name();
         }
 
-        if (update.xSize() != null) {
-            this.xSize = update.xSize();
+        if (update.sizeX() != null) {
+            this.sizeX = update.sizeX();
         }
 
-        if (update.ySize() != null) {
-            this.ySize = update.ySize();
+        if (update.sizeY() != null) {
+            this.sizeY = update.sizeY();
         }
 
         if (update.size() != null) {

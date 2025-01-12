@@ -5,14 +5,15 @@ import com.example.reservefield.domain.stadium.StadiumSize;
 import com.example.reservefield.domain.stadium.StadiumType;
 
 import java.time.LocalTime;
+import java.util.List;
 
 public record StadiumDetailDto(
     Long id,
     Long adminId,
     String name,
-    Integer xSize,
-    Integer ySize,
-    StadiumSize stadiumSize,
+    Integer sizeX,
+    Integer sizeY,
+    StadiumSize size,
     Boolean isUsed,
     Integer price,
     DoorType doorType,
@@ -37,6 +38,7 @@ public record StadiumDetailDto(
     String ballInfo,
     Boolean isToilet,
     String intro,
-    String promise
+    String promise,
+    List<ImageInfoDto> images
 ) {
 }

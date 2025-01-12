@@ -1,26 +1,25 @@
-package com.example.reservefield.dto.request;
+package com.example.reservefield.dto.response;
 
-import com.example.reservefield.domain.stadium.Address;
 import com.example.reservefield.domain.stadium.DoorType;
 import com.example.reservefield.domain.stadium.StadiumSize;
 import com.example.reservefield.domain.stadium.StadiumType;
-import jakarta.validation.constraints.Size;
 
 import java.time.LocalTime;
+import java.util.List;
 
-public record UpdateStadiumRequestDto(
-    @Size(max = 30, message = "구장 이름은 30글자 이상 될 수 없습니다.")
+public record StadiumReserveDetailDto (
+    Long id,
+    Long adminId,
     String name,
     Integer sizeX,
     Integer sizeY,
     StadiumSize size,
+    Boolean isUsed,
     Integer price,
     DoorType doorType,
     StadiumType stadiumType,
     Long coverImage,
-    Address address,
-    @Size(max = 100, message = "주소는 100글자 이상 될 수 없습니다.")
-    String detailAddress,
+    String address,
     LocalTime openingTime,
     LocalTime closingTime,
     Boolean isParking,
@@ -38,10 +37,9 @@ public record UpdateStadiumRequestDto(
     Boolean isBall,
     String ballInfo,
     Boolean isToilet,
-    @Size(max = 300, message = "상세 설명은 300글자 이상이 될 수 없습니다.")
     String intro,
-
-    @Size(max = 300, message = "구장 내 규칙은 300글자 이상이 될 수 없습니다.")
-    String promise
-) {
+    String promise,
+    List<ImageInfoDto> images,
+    List<StadiumReserveTimeDto> reserveTimes
+){
 }

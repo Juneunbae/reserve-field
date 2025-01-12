@@ -6,8 +6,8 @@ import com.example.reservefield.domain.stadium.StadiumSize;
 
 public record StadiumInfoDto(
     String name,
-    Integer xSize,
-    Integer ySize,
+    Integer sizeX,
+    Integer sizeY,
     StadiumSize size,
     Address address,
     Integer price,

@@ -4,6 +4,8 @@ import com.example.reservefield.domain.stadium.Address;
 import com.example.reservefield.domain.stadium.DoorType;
 import com.example.reservefield.domain.stadium.StadiumSize;
 import com.example.reservefield.domain.stadium.StadiumType;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -11,84 +13,84 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalTime;
 
 public record CreateStadiumRequestDto(
-    Long adminId,
-
     @NotBlank(message = "필수 값이므로 빈 칸이 될 수 없습니다.")
     @Size(max = 30, message = "구장 이름은 30글자 이상 될 수 없습니다.")
-    String name,
+    @JsonProperty("name") String name,
 
     @NotNull(message = "필수 값이므로 빈 칸이 될 수 없습니다.")
-    Integer xSize,
+    @JsonProperty("sizeX") Integer sizeX,
 
     @NotNull(message = "필수 값이므로 빈 칸이 될 수 없습니다.")
-    Integer ySize,
+    @JsonProperty("sizeY") Integer sizeY,
 
     @NotNull(message = "필수 값이므로 빈 칸이 될 수 없습니다.")
-    StadiumSize size,
+    @JsonProperty("size") StadiumSize size,
 
     @NotNull(message = "필수 값이므로 빈 칸이 될 수 없습니다.")
-    Integer price,
+    @JsonProperty("price") Integer price,
 
     @NotNull(message = "필수 값이므로 빈 칸이 될 수 없습니다.")
-    DoorType doorType,
+    @JsonProperty("doorType") DoorType doorType,
 
     @NotNull(message = "필수 값이므로 빈 칸이 될 수 없습니다.")
-    StadiumType stadiumType,
+    @JsonProperty("stadiumType") StadiumType stadiumType,
 
     Long coverImage,
 
     @NotNull(message = "필수 값이므로 빈 칸이 될 수 없습니다.")
-    Address address,
+    @JsonProperty("address") Address address,
 
     @NotBlank(message = "필수 값이므로 빈 칸이 될 수 없습니다.")
     @Size(max = 100, message = "주소는 100글자 이상 될 수 없습니다.")
-    String detailAddress,
+    @JsonProperty("detailAddress") String detailAddress,
 
     @NotNull(message = "필수 값이므로 빈 칸이 될 수 없습니다.")
-    LocalTime openingTime,
+    @JsonFormat(pattern = "HH:mm:ss")
+    @JsonProperty("openingTime") LocalTime openingTime,
 
     @NotNull(message = "필수 값이므로 빈 칸이 될 수 없습니다.")
-    LocalTime closingTime,
+    @JsonFormat(pattern = "HH:mm:ss")
+    @JsonProperty("closingTime") LocalTime closingTime,
 
     @NotNull(message = "필수 값이므로 빈 칸이 될 수 없습니다.")
-    Boolean isParking,
+    @JsonProperty("isParking") Boolean isParking,
 
     @NotNull(message = "필수 값이므로 빈 칸이 될 수 없습니다.")
-    Boolean isParkingFree,
+    @JsonProperty("isParkingFree") Boolean isParkingFree,
 
     String parkingInfo,
 
     @NotNull(message = "필수 값이므로 빈 칸이 될 수 없습니다.")
-    Boolean isShower,
+    @JsonProperty("isShower") Boolean isShower,
 
     @NotNull(message = "필수 값이므로 빈 칸이 될 수 없습니다.")
-    Boolean isShowerFree,
+    @JsonProperty("isShowerFree") Boolean isShowerFree,
 
     String showerInfo,
 
     @NotNull(message = "필수 값이므로 빈 칸이 될 수 없습니다.")
-    Boolean isWear,
+    @JsonProperty("isWear") Boolean isWear,
 
     @NotNull(message = "필수 값이므로 빈 칸이 될 수 없습니다.")
-    Boolean isWearFree,
+    @JsonProperty("isWearFree") Boolean isWearFree,
 
     String wearInfo,
 
     @NotNull(message = "필수 값이므로 빈 칸이 될 수 없습니다.")
-    Boolean isShoes,
+    @JsonProperty("isShoes") Boolean isShoes,
 
     @NotNull(message = "필수 값이므로 빈 칸이 될 수 없습니다.")
-    Boolean isShoesFree,
+    @JsonProperty("isShoesFree") Boolean isShoesFree,
 
     String shoesInfo,
 
     @NotNull(message = "필수 값이므로 빈 칸이 될 수 없습니다.")
-    Boolean isBall,
+    @JsonProperty("isBall") Boolean isBall,
 
     String ballInfo,
 
     @NotNull(message = "필수 값이므로 빈 칸이 될 수 없습니다.")
-    Boolean isToilet,
+    @JsonProperty("isToilet") Boolean isToilet,
 
     @Size(max = 300, message = "상세 설명은 300글자 이상이 될 수 없습니다.")
     String intro,
