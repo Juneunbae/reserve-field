@@ -1,0 +1,12 @@
+INSERT INTO reserve_time(name, description) VALUES (N'AM00_AM02', N'00:00 ~ 02:00');
+INSERT INTO reserve_time(name, description) VALUES (N'AM02_AM04', N'02:00 ~ 04:00');
+INSERT INTO reserve_time(name, description) VALUES (N'AM04_AM06', N'04:00 ~ 06:00');
+INSERT INTO reserve_time(name, description) VALUES (N'AM06_AM08', N'06:00 ~ 08:00');
+INSERT INTO reserve_time(name, description) VALUES (N'AM08_AM10', N'08:00 ~ 10:00');
+INSERT INTO reserve_time(name, description) VALUES (N'AM10_PM12', N'10:00 ~ 12:00');
+INSERT INTO reserve_time(name, description) VALUES (N'PM12_PM14', N'12:00 ~ 14:00');
+INSERT INTO reserve_time(name, description) VALUES (N'PM14_PM16', N'14:00 ~ 16:00');
+INSERT INTO reserve_time(name, description) VALUES (N'PM16_PM18', N'16:00 ~ 18:00');
+INSERT INTO reserve_time(name, description) VALUES (N'PM18_PM20', N'18:00 ~ 20:00');
+INSERT INTO reserve_time(name, description) VALUES (N'PM20_PM22', N'20:00 ~ 22:00');
+INSERT INTO reserve_time(name, description) VALUES (N'PM22_AM24', N'22:00 ~ 24:00');
